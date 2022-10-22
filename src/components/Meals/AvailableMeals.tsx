@@ -1,4 +1,6 @@
-import { StyledAvailableMealSection } from "@/components/Meals/AvailableMealsStyles";
+import { StyledAvailableMealSection } from '@/components/Meals/AvailableMealsStyles';
+import { StyledCard } from '@/components/UI/Card';
+import MealItem from '@/components/Meals/MealItem/MealItem';
 
 const DUMMY_MEALS = [
   {
@@ -28,10 +30,19 @@ const DUMMY_MEALS = [
 ];
 
 function AvailableMeals() {
-  const mealsList = DUMMY_MEALS.map((meal) => <li>{meal.name}</li>);
+  const mealsList = DUMMY_MEALS.map((meal) => (
+    <MealItem
+      key={meal.id}
+      name={meal.name}
+      description={meal.description}
+      price={meal.price}
+    />
+  ));
   return (
     <StyledAvailableMealSection>
-      <ul>{mealsList}</ul>
+      <StyledCard>
+        <ul>{mealsList}</ul>
+      </StyledCard>
     </StyledAvailableMealSection>
   );
 }

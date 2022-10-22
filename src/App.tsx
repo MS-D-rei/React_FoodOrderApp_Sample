@@ -1,7 +1,7 @@
 import Header from '@/components/Layout/Header';
-import '@/App.css';
 import Meals from './components/Meals/Meals';
 import { Fragment } from 'react';
+import '@/App.css';
 
 function App() {
   return (

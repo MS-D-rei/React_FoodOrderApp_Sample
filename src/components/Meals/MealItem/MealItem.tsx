@@ -1,15 +1,25 @@
-import { StyledMealItemDescription, StyledMealItemH3, StyledMealItemLI, StyledMealItemPrice, } from '@/components/Meals/MealItem/MealItemStyle'
+import {
+  StyledMealItemDescription,
+  StyledMealItemH3,
+  StyledMealItemLI,
+  StyledMealItemPrice,
+} from '@/components/Meals/MealItem/MealItemStyle';
 import MealItemForm from '@/components/Meals/MealItem/MealItemForm';
+import { useCartContext } from '@/store/cart-context';
+import { Meal } from '@/components/Meals/types'
 
-interface Meal {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-}
-
-function MealItem({id, name, description, price }: Meal) {
+function MealItem({ id, name, description, price }: Meal) {
+  const cartCtx = useCartContext();
   const mealPrice = `${price.toFixed(2)}`;
+
+  const addItemToCartHandler = (enteredAmount: number) => {
+    cartCtx.addItem({
+      id: id,
+      name: name,
+      amount: enteredAmount,
+      price: price,
+    });
+  };
 
   return (
     <StyledMealItemLI>
@@ -19,7 +29,7 @@ function MealItem({id, name, description, price }: Meal) {
         <StyledMealItemPrice>{mealPrice}</StyledMealItemPrice>
       </div>
       <div>
-        <MealItemForm id={id} />
+        <MealItemForm id={id} onAddItemToCart={addItemToCartHandler} />
       </div>
     </StyledMealItemLI>
   );

@@ -1,8 +1,9 @@
 import { StyledAvailableMealSection } from '@/components/Meals/AvailableMealsStyles';
 import { StyledCard } from '@/components/UI/Card';
 import MealItem from '@/components/Meals/MealItem/MealItem';
+import { Meal } from '@/components/Meals/types';
 
-const DUMMY_MEALS = [
+const DUMMY_MEALS: Meal[] = [
   {
     id: 'm1',
     name: 'Sushi',

@@ -13,9 +13,7 @@ interface HeaderCartButtonProps {
 
 function HeaderCartButton({ onClick }: HeaderCartButtonProps) {
   const cartCtx = useCartContext();
-  const numberOfCartItems = cartCtx.items.reduce((current, item) => {
-    return current + item.amount;
-  }, 0);
+  const numberOfCartItems = cartCtx.items.reduce((current, item) => current + item.amount, 0);
   return (
     <StyledCartButton onClick={onClick}>
       <StyledIconSpan>

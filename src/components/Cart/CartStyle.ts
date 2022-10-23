@@ -4,7 +4,7 @@ export const StyledCartItemsUL = styled.ul`
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 20rem;
+  max-height: 40rem;
   overflow: auto;
 `;
 

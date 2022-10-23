@@ -1,22 +1,20 @@
-import { Meal } from '@/components/Meals/types'
-
 export interface CartContextType {
-  items: CartItem[];
+  items: CartItemType[];
   totalPrice: number;
   addItem: Function;
   removeItem: Function;
 }
 
-export interface CartItem {
+export interface CartState {
+  items: CartItemType[];
+  totalPrice: number;
+}
+
+export interface CartItemType {
   id: string;
   name: string;
   amount: number;
   price: number;
-}
-
-export interface CartState {
-  items: CartItem[];
-  totalPrice: number;
 }
 
 export enum CartReducerActionTypes {
@@ -26,7 +24,7 @@ export enum CartReducerActionTypes {
 
 export interface CartReducerAction {
   type: CartReducerActionTypes;
-  payload: CartItem | string;
+  payload: CartItemType | string;
 }
 
 export interface CartContextProps {

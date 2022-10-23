@@ -5,7 +5,7 @@ import {
   CartReducerActionTypes,
   CartReducerAction,
   CartContextProps,
-  CartItem,
+  CartItemType,
 } from '@/store/cart-type';
 
 const CartContext = React.createContext<CartContextType>({
@@ -21,7 +21,7 @@ const cartReducer = (
 ): CartState => {
   switch (action.type) {
     case CartReducerActionTypes.ADD_ITEM:
-      const actionPayload = action.payload as CartItem;
+      const actionPayload = action.payload as CartItemType;
       const afterAddItems = state.items.concat(actionPayload);
       const afterAddTotalPrice =
         state.totalPrice + actionPayload.price * actionPayload.amount;
@@ -50,7 +50,7 @@ export const CartContextProvider = ({ children }: CartContextProps) => {
     defaultCartState
   );
 
-  const addItemToCartHandler = (item: CartItem) => {
+  const addItemToCartHandler = (item: CartItemType) => {
     dispatchCartAction({
       type: CartReducerActionTypes.ADD_ITEM,
       payload: item,

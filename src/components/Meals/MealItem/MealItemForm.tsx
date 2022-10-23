@@ -36,7 +36,7 @@ function MealItemForm({ id, onAddItemToCart }: MealItemFormProps) {
     }
 
     setAmountIsValid(true);
-    onAddItemToCart(enteredAmountNumber);
+    onAddItemToCart(enteredAmountNumber());
   };
 
   return (

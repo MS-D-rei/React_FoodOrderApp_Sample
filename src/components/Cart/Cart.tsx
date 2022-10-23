@@ -7,28 +7,41 @@ import {
   StyledCartOrderButton,
   StyledCartTotalDiv,
 } from '@/components/Cart/CartStyle';
+import { useCartContext } from '@/store/cart-context';
+import CartItem from '@/components/Cart/CartItem';
+import { CartItemType } from '@/store/cart-type';
 
 interface CartProps {
   onHideCart: React.MouseEventHandler;
 }
 
 function Cart({ onHideCart }: CartProps) {
-  const cartItems = [{ id: 'c1', name: 'Sushi', amount: 2, price: 12.99 }].map(
-    (item) => <li>{item.name}</li>
+  const cartCtx = useCartContext();
+  const totalPrice = `$${cartCtx.totalPrice.toFixed(2)}`;
+  const hasItems = cartCtx.items.length > 0;
+
+  const addCartItemHandler = (item: CartItemType) => {};
+
+  const removeCartItemHandler = (id: string) => {};
+
+  /* bind ( Partial function ) */
+  /* https://javascript.info/bind#partial-functions */
+  const cartItems = cartCtx.items.map(
+    (item) => <CartItem key={item.id} id={item.id} name={item.name} amount={item.amount} price={item.price} onAdd={addCartItemHandler.bind(null, item)} onRemove={removeCartItemHandler.bind(null, item.id)} />
   );
 
   return (
     <Modal onHideCart={onHideCart}>
       <StyledCartItemsUL>{cartItems}</StyledCartItemsUL>
       <StyledCartTotalDiv>
-        <span>Total Amount</span>
-        <span>35.62</span>
+        <span>Total Price</span>
+        <span>{totalPrice}</span>
       </StyledCartTotalDiv>
       <StyledCartActionDiv>
         <StyledCartCloseButton onClick={onHideCart}>
           Close
         </StyledCartCloseButton>
-        <StyledCartOrderButton>Order</StyledCartOrderButton>
+        {hasItems && <StyledCartOrderButton>Order</StyledCartOrderButton>}
       </StyledCartActionDiv>
     </Modal>
   );

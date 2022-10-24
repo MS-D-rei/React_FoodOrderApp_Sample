@@ -42,7 +42,7 @@ export const StyledCartItemAmoutSpan = styled.span`
 
 export const StyledCartItemActionsDiv = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 export const StyledCartItemButton = styled.button`

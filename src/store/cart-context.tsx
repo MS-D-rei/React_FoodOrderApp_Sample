@@ -26,33 +26,60 @@ const cartReducer = (
         (item) => item.id === dispatchedCartItem.id
       );
       const existingCartItem = state.items[existingCartItemIndex];
-      let afterAddingCartItems: CartItemType[];
+      let cartItemsAfterAdded: CartItemType[];
 
-      // calculate state.items
+      // Calculate state.items
       if (existingCartItem) {
         const updateTargetItemInfo = {
           ...existingCartItem,
           amount: existingCartItem.amount + dispatchedCartItem.amount,
-        }
-        afterAddingCartItems = [...state.items];
-        afterAddingCartItems[existingCartItemIndex] = updateTargetItemInfo;
+        };
+        cartItemsAfterAdded = [...state.items];
+        cartItemsAfterAdded[existingCartItemIndex] = updateTargetItemInfo;
       } else {
-        afterAddingCartItems = state.items.concat(dispatchedCartItem);
+        cartItemsAfterAdded = state.items.concat(dispatchedCartItem);
       }
 
-      // calculate state.totalPrice
-      const afterAddTotalPrice =
+      // Calculate state.totalPrice
+      const totalPriceAfterAdded =
         state.totalPrice + dispatchedCartItem.price * dispatchedCartItem.amount;
 
       return {
-        items: afterAddingCartItems,
-        totalPrice: afterAddTotalPrice,
+        items: cartItemsAfterAdded,
+        totalPrice: totalPriceAfterAdded,
       };
 
     case CartReducerActionTypes.REMOVE_ITEM:
-      return;
-    default:
-      break;
+      const dispatchedCartItemID = action.payload as string;
+      const removeTargetCartItemIndex = state.items.findIndex(
+        (item) => item.id === dispatchedCartItemID
+      );
+      const removeTargetCartItem = state.items[removeTargetCartItemIndex];
+      let cartItemsAfterRemoved: CartItemType[];
+
+      // Calculate state.items
+      if (removeTargetCartItem.amount === 1) {
+        cartItemsAfterRemoved = state.items.filter(
+          (item) => item.id != dispatchedCartItemID
+        );
+      } else {
+        const removeTargetCartItemInfo = {
+          ...removeTargetCartItem,
+          amount: removeTargetCartItem.amount - 1,
+        };
+        cartItemsAfterRemoved = [...state.items];
+        cartItemsAfterRemoved[removeTargetCartItemIndex] =
+          removeTargetCartItemInfo;
+      }
+
+      // Calculate state.totalPrice
+      const totalPriceAfterRemoved =
+        state.totalPrice - removeTargetCartItem.price;
+
+      return {
+        items: cartItemsAfterRemoved,
+        totalPrice: totalPriceAfterRemoved,
+      };
   }
 };
 

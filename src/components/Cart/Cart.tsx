@@ -20,9 +20,13 @@ function Cart({ onHideCart }: CartProps) {
   const totalPrice = `$${cartCtx.totalPrice.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
-  const increaseCartItemHandler = (item: CartItemType) => {};
+  const increaseCartItemHandler = (item: CartItemType) => {
+    cartCtx.addItem({...item, amount: 1});
+  };
 
-  const decreaseCartItemHandler = (id: string) => {};
+  const decreaseCartItemHandler = (id: string) => {
+    cartCtx.removeItem(id);
+  };
 
   /* bind ( Partial function ) */
   /* https://javascript.info/bind#partial-functions */

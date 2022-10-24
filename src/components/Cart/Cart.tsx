@@ -20,15 +20,23 @@ function Cart({ onHideCart }: CartProps) {
   const totalPrice = `$${cartCtx.totalPrice.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
-  const addCartItemHandler = (item: CartItemType) => {};
+  const increaseCartItemHandler = (item: CartItemType) => {};
 
-  const removeCartItemHandler = (id: string) => {};
+  const decreaseCartItemHandler = (id: string) => {};
 
   /* bind ( Partial function ) */
   /* https://javascript.info/bind#partial-functions */
-  const cartItems = cartCtx.items.map(
-    (item) => <CartItem key={item.id} id={item.id} name={item.name} amount={item.amount} price={item.price} onAdd={addCartItemHandler.bind(null, item)} onRemove={removeCartItemHandler.bind(null, item.id)} />
-  );
+  const cartItems = cartCtx.items.map((item) => (
+    <CartItem
+      key={item.id}
+      id={item.id}
+      name={item.name}
+      amount={item.amount}
+      price={item.price}
+      onAdd={increaseCartItemHandler.bind(null, item)}
+      onRemove={decreaseCartItemHandler.bind(null, item.id)}
+    />
+  ));
 
   return (
     <Modal onHideCart={onHideCart}>

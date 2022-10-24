@@ -21,12 +21,31 @@ const cartReducer = (
 ): CartState => {
   switch (action.type) {
     case CartReducerActionTypes.ADD_ITEM:
-      const actionPayload = action.payload as CartItemType;
-      const afterAddItems = state.items.concat(actionPayload);
+      const dispatchedCartItem = action.payload as CartItemType;
+      const existingCartItemIndex = state.items.findIndex(
+        (item) => item.id === dispatchedCartItem.id
+      );
+      const existingCartItem = state.items[existingCartItemIndex];
+      let afterAddingCartItems: CartItemType[];
+
+      // calculate state.items
+      if (existingCartItem) {
+        const updateTargetItemInfo = {
+          ...existingCartItem,
+          amount: existingCartItem.amount + dispatchedCartItem.amount,
+        }
+        afterAddingCartItems = [...state.items];
+        afterAddingCartItems[existingCartItemIndex] = updateTargetItemInfo;
+      } else {
+        afterAddingCartItems = state.items.concat(dispatchedCartItem);
+      }
+
+      // calculate state.totalPrice
       const afterAddTotalPrice =
-        state.totalPrice + actionPayload.price * actionPayload.amount;
+        state.totalPrice + dispatchedCartItem.price * dispatchedCartItem.amount;
+
       return {
-        items: afterAddItems,
+        items: afterAddingCartItems,
         totalPrice: afterAddTotalPrice,
       };
 

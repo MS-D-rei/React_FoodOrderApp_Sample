@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CartIcon from '@/components/Cart/CartIcon';
 import {
   StyledBadgeSpan,
@@ -12,10 +12,32 @@ interface HeaderCartButtonProps {
 }
 
 function HeaderCartButton({ onClick }: HeaderCartButtonProps) {
+  const [isButtonHighlighted, setIsButtonHighlighted] = useState(false);
+
   const cartCtx = useCartContext();
-  const numberOfCartItems = cartCtx.items.reduce((current, item) => current + item.amount, 0);
+  const numberOfCartItems = cartCtx.items.reduce(
+    (current, item) => current + item.amount,
+    0
+  );
+
+  const cartButtonBumpClass = isButtonHighlighted ? 'bump' : '';
+
+  useEffect(() => {
+    if (cartCtx.items.length === 0) {
+      return;
+    }
+    setIsButtonHighlighted(true);
+    const bumpResetTimer = setTimeout(() => {
+      setIsButtonHighlighted(false);
+    }, 300);
+
+    return () => {
+      clearTimeout(bumpResetTimer);
+    };
+  }, [cartCtx.items]);
+
   return (
-    <StyledCartButton onClick={onClick}>
+    <StyledCartButton onClick={onClick} className={cartButtonBumpClass}>
       <StyledIconSpan>
         <CartIcon />
       </StyledIconSpan>

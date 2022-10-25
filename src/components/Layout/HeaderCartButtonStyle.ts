@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const StyledCartButton = styled.button`
+interface CartButtonType {
+  className: string;
+}
+
+export const StyledCartButton = styled.button<CartButtonType>`
   cursor: pointer;
   font: inherit;
   border: none;
@@ -13,21 +17,23 @@ export const StyledCartButton = styled.button`
   border-radius: 25px;
   font-weight: bold;
 
-  @keyframes bump {
-    0% {
-      transform: scale(1);
-    }
-    10% {
-      transform: scale(0.9);
-    }
-    30% {
-      transform: scale(1.1);
-    }
-    50% {
-      transform: scale(1.15);
-    }
-    100% {
-      transform: scale(1);
+  &.bump {
+    @keyframes bump {
+      0% {
+        transform: scale(1);
+      }
+      10% {
+        transform: scale(0.9);
+      }
+      30% {
+        transform: scale(1.1);
+      }
+      50% {
+        transform: scale(1.15);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
   }
 

@@ -2,6 +2,8 @@ import { StyledAvailableMealSection } from '@/components/Meals/AvailableMealsSty
 import { StyledCard } from '@/components/UI/Card';
 import MealItem from '@/components/Meals/MealItem/MealItem';
 import { Meal } from '@/components/Meals/types';
+import { useFirebaseFoodList } from '@/hooks/use-firebase-foodlist';
+import { useCallback, useEffect, useState } from 'react';
 
 const DUMMY_MEALS: Meal[] = [
   {
@@ -31,7 +33,25 @@ const DUMMY_MEALS: Meal[] = [
 ];
 
 function AvailableMeals() {
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  const firebaseGetRequest = {
+    url: 'https://react-httprequest-sample-default-rtdb.asia-southeast1.firebasedatabase.app/foodlist.json',
+  };
+  const { isLoading, error, sendGetRequest } =
+    useFirebaseFoodList(firebaseGetRequest);
+  const [foodList, setFoodList] = useState<Meal[]>([]);
+
+  const sendGetRequestHandler = useCallback(async () => {
+    const transformedFoodList = await sendGetRequest();
+    if (transformedFoodList) {
+      setFoodList(transformedFoodList);
+    }
+  }, []);
+
+  useEffect(() => {
+    sendGetRequestHandler();
+  }, [sendGetRequestHandler]);
+
+  const mealsList = foodList.map((meal) => (
     <MealItem
       key={meal.id}
       id={meal.id}

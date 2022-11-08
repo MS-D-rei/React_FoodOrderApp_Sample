@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Meal } from '@/components/Meals/types';
 
 interface UseFirebaseFoodListProps {
@@ -14,7 +14,7 @@ export const useFirebaseFoodList = (
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const sendGetRequest = async () => {
+  const sendGetRequest = useCallback(async () => {
     setIsLoading(true);
     setError(undefined);
     try {
@@ -49,7 +49,7 @@ export const useFirebaseFoodList = (
       }
     }
     setIsLoading(false);
-  };
+  }, [firebaseRequest]);
 
   return {
     isLoading,

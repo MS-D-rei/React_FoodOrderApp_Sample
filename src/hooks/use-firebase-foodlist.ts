@@ -12,11 +12,11 @@ export const useFirebaseFoodList = (
   firebaseRequest: UseFirebaseFoodListProps
 ) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [httpError, setHttpError] = useState<string | undefined>(undefined);
 
   const sendGetRequest = useCallback(async () => {
     setIsLoading(true);
-    setError(undefined);
+    setHttpError(undefined);
     try {
       const response = await fetch(firebaseRequest.url, {
         method: firebaseRequest.method ? firebaseRequest.method : 'Get',
@@ -39,21 +39,23 @@ export const useFirebaseFoodList = (
           price: data[key].price,
         });
       }
+      setIsLoading(false);
       return foodList;
     } catch (err) {
       if (err instanceof Error) {
         console.log(err);
-        setError(err.message);
+        setHttpError(err.message);
+        setIsLoading(false);
       } else {
         console.log(`Unexpected error: ${err}`);
+        setIsLoading(false);
       }
     }
-    setIsLoading(false);
   }, [firebaseRequest]);
 
   return {
     isLoading,
-    error,
+    httpError,
     sendGetRequest,
   };
 };

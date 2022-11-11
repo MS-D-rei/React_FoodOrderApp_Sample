@@ -1,9 +1,13 @@
-import { StyledAvailableMealSection } from '@/components/Meals/AvailableMealsStyles';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  AvailableMealErrorSection,
+  AvailableMealLoadingSection,
+  StyledAvailableMealSection,
+} from '@/components/Meals/AvailableMealsStyles';
 import { StyledCard } from '@/components/UI/Card';
 import MealItem from '@/components/Meals/MealItem/MealItem';
 import { Meal } from '@/components/Meals/types';
 import { useFirebaseFoodList } from '@/hooks/use-firebase-foodlist';
-import { useCallback, useEffect, useState } from 'react';
 
 const DUMMY_MEALS: Meal[] = [
   {
@@ -36,7 +40,7 @@ function AvailableMeals() {
   const firebaseGetRequest = {
     url: 'https://react-httprequest-sample-default-rtdb.asia-southeast1.firebasedatabase.app/foodlist.json',
   };
-  const { isLoading, error, sendGetRequest } =
+  const { isLoading, httpError, sendGetRequest } =
     useFirebaseFoodList(firebaseGetRequest);
   const [foodList, setFoodList] = useState<Meal[]>([]);
 
@@ -51,6 +55,22 @@ function AvailableMeals() {
     sendGetRequestHandler();
   }, [sendGetRequestHandler]);
 
+  if (isLoading) {
+    return (
+      <AvailableMealLoadingSection>
+        <p>Loading...</p>
+      </AvailableMealLoadingSection>
+    );
+  }
+
+  if (httpError) {
+    return (
+      <AvailableMealErrorSection>
+        <p>{httpError}</p>
+      </AvailableMealErrorSection>
+    );
+  }
+
   const mealsList = foodList.map((meal) => (
     <MealItem
       key={meal.id}
@@ -60,6 +80,7 @@ function AvailableMeals() {
       price={meal.price}
     />
   ));
+
   return (
     <StyledAvailableMealSection>
       <StyledCard>

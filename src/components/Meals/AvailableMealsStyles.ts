@@ -24,3 +24,13 @@ export const StyledAvailableMealSection = styled.section`
     }
   }
 `;
+
+export const AvailableMealLoadingSection = styled.section`
+  text-align: center;
+  color: #292929;
+`;
+
+export const AvailableMealErrorSection = styled.section`
+  text-align: center;
+  color: red;
+`;

@@ -1,12 +1,16 @@
 import styled from 'styled-components';
 
-export const CheckoutFormDiv = styled.div`
+export const CheckoutForm = styled.form`
   margin: 1rem 0;
   height: 19rem;
   overflow: auto;
 `;
 
-export const CheckoutControlDiv = styled.div`
+interface CheckoutControlDivProps {
+  className: string;
+}
+
+export const CheckoutControlDiv = styled.div<CheckoutControlDivProps>`
   margin-bottom: 0.5rem;
 
   & label {
@@ -21,6 +25,15 @@ export const CheckoutControlDiv = styled.div`
     border-radius: 4px;
     width: 20rem;
     max-width: 100%;
+  }
+
+  &.invalid label {
+    color: #ca3e51;
+  }
+
+  &.invalid input {
+    border-color: #aa0b20;
+    background-color: #ffeff1;
   }
 `;
 

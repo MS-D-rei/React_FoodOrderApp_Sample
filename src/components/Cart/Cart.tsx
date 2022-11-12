@@ -48,6 +48,7 @@ function Cart({ onHideCart }: CartProps) {
     sendPostRequest(userInfo, cartCtx.items);
     setIsSubmitting(false);
     setDidSubmit(true);
+    cartCtx.clearItems();
   };
 
   /* bind ( Partial function ) */

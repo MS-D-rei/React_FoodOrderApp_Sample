@@ -3,6 +3,7 @@ export interface CartContextType {
   totalPrice: number;
   addItem: Function;
   removeItem: Function;
+  clearItems: Function;
 }
 
 export interface CartState {
@@ -20,6 +21,7 @@ export interface CartItemType {
 export enum CartReducerActionTypes {
   ADD_ITEM = 'ADD_ITEM',
   REMOVE_ITEM = 'REMOVE_ITEM',
+  CLEAR_ITEMS = 'CLEAR_ITEMS'
 }
 
 export interface CartReducerAction {

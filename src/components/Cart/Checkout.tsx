@@ -7,7 +7,6 @@ import {
   CheckoutSubmitButton,
 } from '@/components/Cart/CheckoutStyle';
 import { UserAddress } from '@/components/Cart/types';
-import { useCartContext } from '@/store/cart-context';
 
 const isEmpty = (value: string) => value.trim().length === 0;
 const is7DigitsPostalCode = (value: string) => value.trim().length === 7;

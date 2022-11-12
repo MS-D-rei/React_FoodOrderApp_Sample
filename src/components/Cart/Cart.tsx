@@ -24,6 +24,8 @@ const firebaseGetRequest = {
 
 function Cart({ onHideCart }: CartProps) {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useCartContext();
   const totalPrice = `$${cartCtx.totalPrice.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
@@ -42,7 +44,10 @@ function Cart({ onHideCart }: CartProps) {
   };
 
   const confirmHandler = (userInfo: UserAddress) => {
+    setIsSubmitting(true);
     sendPostRequest(userInfo, cartCtx.items);
+    setIsSubmitting(false);
+    setDidSubmit(true);
   };
 
   /* bind ( Partial function ) */
@@ -69,6 +74,27 @@ function Cart({ onHideCart }: CartProps) {
       )}
     </StyledCartActionDiv>
   );
+
+  // When submitting
+  const isSubmittingModalContent = <p>Sending order data...</p>;
+  if (isSubmitting) {
+    return <Modal onHideCart={onHideCart}>{isSubmittingModalContent}</Modal>;
+  }
+
+  // When submitting is done
+  const didSubmitModalContent = (
+    <>
+      <p>Successfully sent the order</p>
+      <StyledCartActionDiv>
+        <StyledCartCloseButton onClick={onHideCart}>
+          Close
+        </StyledCartCloseButton>
+      </StyledCartActionDiv>
+    </>
+  );
+  if (didSubmit) {
+    return <Modal onHideCart={onHideCart}>{didSubmitModalContent}</Modal>;
+  }
 
   return (
     <Modal onHideCart={onHideCart}>

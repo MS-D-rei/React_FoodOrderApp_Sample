@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Meal } from '@/components/Meals/types';
+import { UserAddress } from '@/components/Cart/types';
+import { CartItemType } from '@/store/cart-type';
 
 interface UseFirebaseFoodListProps {
   url: string;
@@ -53,9 +55,37 @@ export const useFirebaseFoodList = (
     }
   }, [firebaseRequest]);
 
+  const sendPostRequest = async (
+    userInfo: UserAddress,
+    orderedItems: CartItemType[]
+  ) => {
+    try {
+      const response = await fetch(firebaseRequest.url, {
+        method: 'POST',
+        body: JSON.stringify({
+          userInfo: userInfo,
+          orderedItems: orderedItems,
+        }),
+        headers: {
+          'Context-Type': 'application/json',
+        },
+      });
+      console.log(response);
+      const data = await response.json();
+      console.log(data);
+    } catch (err) {
+      if (err instanceof Error) {
+        console.log(err);
+      } else {
+        console.log(`Unexpected Error: ${err}`);
+      }
+    }
+  };
+
   return {
     isLoading,
     httpError,
     sendGetRequest,
+    sendPostRequest
   };
 };

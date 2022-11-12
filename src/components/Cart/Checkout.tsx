@@ -6,25 +6,28 @@ import {
   CheckoutForm,
   CheckoutSubmitButton,
 } from '@/components/Cart/CheckoutStyle';
+import { UserAddress } from '@/components/Cart/types';
+import { useCartContext } from '@/store/cart-context';
 
 const isEmpty = (value: string) => value.trim().length === 0;
-const is8DigitsPostalCode = (value: string) => value.trim().length === 8;
+const is7DigitsPostalCode = (value: string) => value.trim().length === 7;
 
 interface CheckoutProps {
+  onConfirm: (userAddress: UserAddress) => void;
   onCancel: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function Checkout({ onCancel }: CheckoutProps) {
+function Checkout({ onConfirm, onCancel }: CheckoutProps) {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const streetInputRef = useRef<HTMLInputElement>(null);
   const postalInputRef = useRef<HTMLInputElement>(null);
   const cityInputRef = useRef<HTMLInputElement>(null);
-  const [ formValidity, setFormValidity ] = useState({
+  const [formValidity, setFormValidity] = useState({
     name: true,
     street: true,
     postal: true,
     city: true,
-  })
+  });
 
   const confirmHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +52,7 @@ function Checkout({ onCancel }: CheckoutProps) {
     }
     if (postalInputRef.current) {
       enteredPostal = postalInputRef.current.value;
-      isValidPostal = is8DigitsPostalCode(enteredPostal);
+      isValidPostal = is7DigitsPostalCode(enteredPostal);
     }
     if (cityInputRef.current) {
       enteredCity = cityInputRef.current.value;
@@ -61,7 +64,7 @@ function Checkout({ onCancel }: CheckoutProps) {
       street: isValidStreet,
       postal: isValidPostal,
       city: isValidCity,
-    })
+    });
 
     const formIsValid =
       isValidName && isValidStreet && isValidPostal && isValidCity;
@@ -70,11 +73,17 @@ function Checkout({ onCancel }: CheckoutProps) {
       return;
     }
     // submit data
+    onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      postal: enteredPostal,
+      city: enteredCity,
+    });
   };
 
   const controlDivClassName = (type: 'name' | 'street' | 'postal' | 'city') => {
-    return formValidity[type] ? '' : 'invalid'
-  }
+    return formValidity[type] ? '' : 'invalid';
+  };
 
   return (
     <CheckoutForm onSubmit={confirmHandler}>

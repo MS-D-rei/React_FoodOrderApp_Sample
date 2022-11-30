@@ -32,6 +32,7 @@ export const useFirebaseFoodList = (
       }
       console.log(response);
       const data: Meal[] = await response.json();
+      console.log(data);
       let foodList: Meal[] = [];
       for (let key in data) {
         foodList.push({
